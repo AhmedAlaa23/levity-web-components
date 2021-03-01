@@ -1,58 +1,13 @@
-var lwcStyleSheet = document.querySelector('[lv-style]').sheet
 
-function lwcInsertCSSRule(ruleSelector, rule){
-	let CSSRule = `${ruleSelector} ${rule}`;
-	lwcStyleSheet.insertRule(CSSRule)
-}
+import {lwcWriteCSSRule} from '../utils.js'
 
-function lwcDeleteCSSRule(ruleSelector, index){
-	let cssRules = Array.from(lwcStyleSheet.cssRules)
-
-	if(index){
-		lwcStyleSheet.deleteRule(index);
-	}
-	else{
-		for(let [ruleIndex, rule] of cssRules.entries()){
-			if(rule.selectorText === ruleSelector){
-				lwcStyleSheet.deleteRule(ruleIndex);
-			}
-		}
-	}
-}
-
-function lwcCheckCssRuleExist(ruleSelector){
-	let cssRules = Array.from(lwcStyleSheet.cssRules)
-
-	for(let [index, rule] of cssRules.entries()){
-		if(rule.selectorText === ruleSelector){
-			return index
-		}
-	}
-
-	return false;
-}
-
-function lwcWriteCSSRule(ruleSelector, rule){
-	let ruleIndex = lwcCheckCssRuleExist(ruleSelector);
-	if(ruleIndex !== false){
-		lwcDeleteCSSRule(ruleSelector, ruleIndex);
-		lwcInsertCSSRule(ruleSelector, rule);
-	}
-	else{
-		lwcInsertCSSRule(ruleSelector, rule);
-	}
-}
-
-// ======================== Components ==============
-// ==================================================
-
-customElements.define('lv-header', class extends HTMLElement {
+const lvHeader = customElements.define('lv-header', class extends HTMLElement {
 	constructor() {
 		super();
 	}
 
 	static get observedAttributes() {
-		return ['padding', 'bg', 'fixed'];
+		return ['padding', 'bg', 'pos'];
 	}
 
 	attributeChangedCallback(attrName, oldValue, newValue){
@@ -64,18 +19,18 @@ customElements.define('lv-header', class extends HTMLElement {
 	rewriteStyle(){
 		let elemId = this.id;
 
-		let padding = this.getAttribute('padding') ?? '10px 20px';
+		let pad = this.getAttribute('pad') ?? '20px 20px';
 		let bg = this.getAttribute('bg') ?? 'white';
-		let isFixed = this.hasAttribute('fixed') ?? false;
+		let pos = this.getAttribute('pos') ?? 'initial';
 
 		let elemStyle = `{
 			width: 100%;
-			${isFixed? 'position: fixed;':''}
+			position: ${pos};
 			display: grid;
 			grid-template-columns: [left] auto [center] auto [right] auto [end];
 			align-items: center;
 			justify-items: center;
-			padding: ${padding};
+			padding: ${pad};
 			background-color: ${bg};
 			box-sizing: border-box;
 			// box-shadow: 0px 1px 2px #dcdcdc;
@@ -85,9 +40,9 @@ customElements.define('lv-header', class extends HTMLElement {
 
 		let leftChildElem = this.querySelector("[pos='l']");
 		if(leftChildElem){
-			let leftChildAlign = leftChildElem.getAttribute('align') ?? 'center';
+			let leftChildAlign = leftChildElem.getAttribute('align') ?? 'left';
 			var leftChildStyle = `{
-				width: 100%;
+				// width: 100%;
 				grid-column: left;
 				justify-self: ${leftChildAlign};
 			}
@@ -98,7 +53,7 @@ customElements.define('lv-header', class extends HTMLElement {
 		if(centerChildElem){
 			let centerChildAlign = centerChildElem.getAttribute('align') ?? 'center';
 			var centerChildStyle = `{
-				width: 100%;
+				// width: 100%;
 				grid-column: center;
 				justify-self: ${centerChildAlign};
 			}
@@ -107,9 +62,9 @@ customElements.define('lv-header', class extends HTMLElement {
 
 		let rightChildElem = this.querySelector("[pos='r']");
 		if(rightChildElem){
-			let rightChildAlign = rightChildElem.getAttribute('align') ?? 'center';
+			let rightChildAlign = rightChildElem.getAttribute('align') ?? 'right';
 			var rightChildStyle = `{
-				width: 100%;
+				// width: 100%;
 				grid-column: right;
 				justify-self: ${rightChildAlign};
 			}
@@ -131,3 +86,5 @@ customElements.define('lv-header', class extends HTMLElement {
 	}
 
 });
+
+export default lvHeader
