@@ -5,7 +5,7 @@ if(document.querySelector('[lv-style]') === null){
 	document.head.appendChild(style);
 }
 
-var lwcStyleSheet = document.querySelector('[lv-style]').sheet
+var lwcStyleSheet = document.querySelector('[lv-style]').sheet;
 
 function lwcInsertCSSRule(ruleSelector, rule, styleSheet=lwcStyleSheet){
 	let CSSRule = `${ruleSelector} ${rule}`;
