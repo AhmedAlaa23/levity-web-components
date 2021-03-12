@@ -1,13 +1,27 @@
-
 import {lwcWriteCSSRule} from '../utils.js'
 
 const lvNav = customElements.define('lv-nav', class extends HTMLElement {
 	constructor() {
 		super();
+
+		this['mobile-breakpoint'] = '800px';
+		this['direction'] = 'h'; // ['v','h']
+		this['color'] = 'black';
+		this['f-size'] = '18px';
+		this['bg'] = 'inherit';
+		this['gaps'] = '20px';
+
+		const shadowRoot = this.attachShadow({mode: 'open'});
+		shadowRoot.innerHTML = `
+		<style>
+		</style>
+
+		<slot></slot>
+		`;
 	}
 
 	static get observedAttributes() {
-		return ['gaps', 'bg', 'res'];
+		return ['gaps', 'bg', 'color', 'f-size'];
 	}
 
 	attributeChangedCallback(attrName, oldValue, newValue){
@@ -17,27 +31,27 @@ const lvNav = customElements.define('lv-nav', class extends HTMLElement {
 	}
 
 	updateComponent(){
-		let elemId = this.id;
-
-		let fontColor = this.getAttribute('color') ?? 'black';
-		let fontSize = this.getAttribute('f-size') ?? '18px';
-		let bg = this.getAttribute('bg') ?? 'rgba(0,0,0,0)';
-		let gap = this.getAttribute('gap') ?? '20px';
-		let mWidth = this.getAttribute('m-width') ?? '800px';
+		this['mobile-breakpoint'] = this.getAttribute('mobile-breakpoint') ?? this['mobile-breakpoint'];
+		this['direction'] = this.getAttribute('direction') ?? this['direction'];
+		this['color'] = this.getAttribute('color') ?? this['color'];
+		this['f-size'] = this.getAttribute('f-size') ?? this['f-size'];
+		this['bg'] = this.getAttribute('bg') ?? this['bg'];
+		this['gaps'] = this.getAttribute('gaps') ?? this['gaps'];
 
 		let elemStyle = `{
 			width: auto;
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
-			gap: ${gap};
-			background: ${bg};
+			flex-direction: ${this['direction']==='v'? 'column':'row'};
+			gap: ${this['gaps']};
+			background: ${this['bg']};
 		}
 		`;
 
 		let childrenStyle = `{
-			color: ${fontColor};
-			font-size: ${fontSize};
+			color: ${this['color']};
+			font-size: ${this['f-size']};
 			transition: all 0.2s;
 		}`;
 
@@ -51,25 +65,18 @@ const lvNav = customElements.define('lv-nav', class extends HTMLElement {
 			}
 		}`;
 
-		lwcWriteCSSRule(`#${elemId}`, elemStyle)
-		lwcWriteCSSRule(`#${elemId} > *`, childrenStyle)
-		lwcWriteCSSRule(`#${elemId} > *:hover`, childrenHoverStyle)
-		lwcWriteCSSRule(`@media (max-width:${mWidth})`, mediaQuery)
-		lwcWriteCSSRule(`#${elemId} a`, '{text-decoration: none;}')
+		lwcWriteCSSRule(`:host`, elemStyle, this.shadowRoot.styleSheets[0])
+		lwcWriteCSSRule(`:host > *`, childrenStyle, this.shadowRoot.styleSheets[0])
+		lwcWriteCSSRule(`:host > *:hover`, childrenHoverStyle, this.shadowRoot.styleSheets[0])
+		lwcWriteCSSRule(`@media (max-width:${this['mobile-breakpoint']})`, mediaQuery, this.shadowRoot.styleSheets[0])
+		lwcWriteCSSRule(`:host a`, '{text-decoration: none;}', this.shadowRoot.styleSheets[0])
 	}
 
 	connectedCallback() {
 		this.updateComponent();
-
-		// window.addEventListener('resize', (e)=>{
-		// 	console.log(window.innerWidth);
-		// })
 	}
 
-	disconnectedCallback(){
-
-	}
-
+	disconnectedCallback(){}
 });
 
 export default lvNav
