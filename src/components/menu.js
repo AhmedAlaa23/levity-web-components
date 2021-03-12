@@ -46,6 +46,7 @@ const lvMenu = customElements.define('lv-menu', class extends HTMLElement {
 		this['open-length'] = this.getAttribute('open-length') ?? this['open-length'];
 		this['open-style'] = this.getAttribute('open-style') ?? this['open-style'];
 		this['pad'] = this.getAttribute('pad') ?? this['pad'];
+		this['bg'] = this.getAttribute('bg') ?? this['bg'];
 
 		let hostStyle = '{}';
 		let containerStyle = '{}';
