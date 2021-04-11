@@ -7,6 +7,7 @@ import lvBars from './components/bars.js'
 import lvHide from './components/hide.js'
 import lvMenu from './components/menu.js'
 import lvTeleport from './components/teleport.js'
+import lvListRender from './components/list-render.js'
 
 const lvWebComponents = {
 	lvHeader,
@@ -17,7 +18,9 @@ const lvWebComponents = {
 	lvBars,
 	lvHide,
 	lvMenu,
-	lvTeleport
+	lvTeleport,
+	lvListRender,
+	// lvListTemplate
 }
 
 export default lvWebComponents

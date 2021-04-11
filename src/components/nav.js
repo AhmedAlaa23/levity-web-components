@@ -6,6 +6,8 @@ const lvNav = customElements.define('lv-nav', class extends HTMLElement {
 
 		this['mobile-breakpoint'] = '800px';
 		this['direction'] = 'h'; // ['v','h']
+		this['align'] = 'center'; // ['center','left','right']
+		this['pad'] = '0';
 		this['color'] = 'black';
 		this['f-size'] = '18px';
 		this['bg'] = 'inherit';
@@ -21,7 +23,7 @@ const lvNav = customElements.define('lv-nav', class extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['gaps', 'bg', 'color', 'f-size'];
+		return ['gaps','bg','color','f-size','pad'];
 	}
 
 	attributeChangedCallback(attrName, oldValue, newValue){
@@ -33,6 +35,8 @@ const lvNav = customElements.define('lv-nav', class extends HTMLElement {
 	updateComponent(){
 		this['mobile-breakpoint'] = this.getAttribute('mobile-breakpoint') ?? this['mobile-breakpoint'];
 		this['direction'] = this.getAttribute('direction') ?? this['direction'];
+		this['align'] = this.getAttribute('align') ?? this['align'];
+		this['padding'] = this.getAttribute('padding') ?? this['padding'];
 		this['color'] = this.getAttribute('color') ?? this['color'];
 		this['f-size'] = this.getAttribute('f-size') ?? this['f-size'];
 		this['bg'] = this.getAttribute('bg') ?? this['bg'];
@@ -42,8 +46,9 @@ const lvNav = customElements.define('lv-nav', class extends HTMLElement {
 			width: auto;
 			display: flex;
 			flex-wrap: wrap;
-			align-items: center;
+			align-items: ${this.align};
 			flex-direction: ${this['direction']==='v'? 'column':'row'};
+			padding: ${this['padding']};
 			gap: ${this['gaps']};
 			background: ${this['bg']};
 		}
