@@ -8,6 +8,8 @@ import lvHide from './components/hide.js'
 import lvMenu from './components/menu.js'
 import lvTeleport from './components/teleport.js'
 import lvListRender from './components/list-render.js'
+import lvInputOutlined from './components/input-outlined.js'
+import lvInputSelect from './components/input-select.js'
 
 const lvWebComponents = {
 	lvHeader,
@@ -20,6 +22,8 @@ const lvWebComponents = {
 	lvMenu,
 	lvTeleport,
 	lvListRender,
+	lvInputOutlined,
+	lvInputSelect,
 	// lvListTemplate
 }
 
