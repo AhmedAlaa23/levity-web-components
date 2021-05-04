@@ -10,6 +10,8 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 		super();
 
 		this.type = 'text';
+		this.label = '';
+		this.width = '100%';
 
 		// Attach a shadow root to.
 		const shadowRoot = this.attachShadow({mode: 'open'});
@@ -19,6 +21,7 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 				display: block;
 				overflow: hidden;
 				box-sizing: border-box;
+				width: ${this.width};
 			}
 
 			#container{
@@ -58,7 +61,13 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 				background-color: inherit;
 			}
 
-			#input, #label{
+			#label{
+				position: absolute;
+				top: 0;
+				left: 0;
+				transition: all 0.2s;
+				background-color: white;
+				backdrop-filter: blur(20px);
 				font-family: sans-serif;
 				font-size: 20px;
 			}
@@ -68,21 +77,14 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 				outline: none;
 				width: 100%;
 				background-color: inherit;
+				font-family: sans-serif;
+				font-size: 20px;
 			}
 
 			#input::-webkit-outer-spin-button,
 			#input::-webkit-inner-spin-button {
 				-webkit-appearance: none;
 				margin: 0;
-			}
-
-			#label{
-				position: absolute;
-				top: 0;
-				left: 0;
-				transition: all 0.2s;
-				background-color: white;
-				backdrop-filter: blur(20px);
 			}
 		</style>
 
@@ -129,66 +131,26 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 		this.shadowRoot.getElementById('input').value = this.value;
 	}
 
-	get min(){
-		if( this.hasAttribute('min') ){
-			return Number(this.getAttribute('min'));
-		}
-		else{
-			return null;
-		}
-	}
-
-	set min(val) {
-		if(val){
-			this.setAttribute('min',val);
-			this.shadowRoot.getElementById('input').setAttribute('min',val);
-		}
-	}
-
-	get max(){
-		if( this.hasAttribute('max') ){
-			return Number(this.getAttribute('max'));
-		}
-		else{
-			return null;
-		}
-	}
-
-	set max(val) {
-		if(val){
-			this.setAttribute('max',val);
-			this.shadowRoot.getElementById('input').setAttribute('max',val);
-		}
-	}
-
 	static get observedAttributes() {
-		return ['value','label','max','min'];
+		return ['value','label','max','min','width'];
 	}
 
 	attributeChangedCallback(attrName, oldValue, newValue){
 		if(oldValue != newValue){
 			if(attrName == "value"){
-					this.value = newValue;
-					if(this.value != ""){
-						this.moveLabelUp();
+				this.value = newValue;
+				if(this.value != ""){
+					this.moveLabelUp();
+				}
+				else{
+					// to check if the focus is on the element keep the label up
+					if(document.activeElement != this){
+						this.moveLabelDown();
 					}
-					else{
-						// to check if the focus is on the element keep the label up
-						if(document.activeElement != this){
-							this.moveLabelDown();
-						}
-					}
+				}
 			}
-			else if(attrName == "label"){
-				this.shadowRoot.getElementById('label').innerHTML = newValue;
-			}
-			else if(attrName == "min"){
-				this.min = newValue;
-				// this.shadowRoot.getElementById('input').setAttribute('min',newValue);
-			}
-			else if(attrName == "max"){
-				this.max = newValue;
-				// this.shadowRoot.getElementById('input').setAttribute('max',newValue);
+			else{
+				this.updateComponent();
 			}
 		}
 	}
@@ -225,7 +187,42 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 		this.shadowRoot.getElementById('input').focus();
 	}
 
+	updateComponent(){
+		this.width = this.getAttribute('width') ?? this.width;
+		this.label = this.getAttribute('label') ?? this.label;
+
+		this.shadowRoot.getElementById('label').innerHTML = this.label;
+
+		if(this.hasAttribute('min')){
+			this.shadowRoot.getElementById('input').setAttribute('min', this.getAttribute('min'));
+		}
+		if(this.hasAttribute('max')){
+			this.shadowRoot.getElementById('input').setAttribute('max', this.getAttribute('max'));
+		}
+
+		const hostStyle = `{
+			display: block;
+			overflow: hidden;
+			box-sizing: border-box;
+			width: ${this.width};
+		}`
+
+		const inputStyle = `{
+			border: 0;
+			outline: none;
+			width: 100%;
+			background-color: inherit;
+			font-family: sans-serif;
+			font-size: 20px;
+		}`;
+
+		lwcWriteCSSRule(`:host`, hostStyle, this.shadowRoot.styleSheets[0]);
+		lwcWriteCSSRule(`:host > input`, inputStyle, this.shadowRoot.styleSheets[0]);
+	}
+
 	connectedCallback() {
+		this.updateComponent();
+
 		this.style.width = this.hasAttribute('width')? this.getAttribute('width'):'';
 		this.type = this.hasAttribute('type')? this.getAttribute('type'):'text';
 		let label = this.hasAttribute('label')? this.getAttribute('label'):'';
