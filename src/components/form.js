@@ -29,7 +29,7 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 	checkValidity(){
 		let children = [...this.children];
 		for(let child of children){
-			if(child.tagName=='INPUT' || child.tagName.split('-')[0]=='INPUT'){
+			if(child.tagName=='INPUT' || child.tagName.split('-').includes('INPUT')){
 				if(!child.checkValidity()){
 					return false;
 				}
@@ -41,7 +41,7 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 	reportValidity(){
 		let children = [...this.children];
 		for(let child of children){
-			if(child.tagName=='INPUT' || child.tagName.split('-')[0]=='INPUT'){
+			if(child.tagName=='INPUT' || child.tagName.split('-').includes('INPUT')){
 				if(!child.reportValidity()){
 					return false;
 				}
