@@ -39,7 +39,7 @@ const lvBtn = customElements.define('lv-btn', class extends HTMLElement {
 		this.rounded = this.getAttribute('rounded') ?? this.rounded;
 		this.mar = this.getAttribute('mar') ?? this.mar;
 		this.link = this.getAttribute('link');
-		this.target = this.getAttribute('target');
+		this.target = this.getAttribute('target') ?? '_self';
 
 		if(this.link){
 			this.shadowRoot.innerHTML = `

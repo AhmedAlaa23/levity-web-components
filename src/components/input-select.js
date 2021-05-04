@@ -1,10 +1,10 @@
 import {lwcWriteCSSRule} from '../utils.js'
 
 
-const lvInputSelect = customElements.define('input-select', class extends HTMLElement {
+const lvInputSelect = customElements.define('lv-input-select', class extends HTMLElement {
 	//<input-select value='' label='' type='text'>
 	//	<i class="material-icons" slot='left'>favorite</i>
-	//	<i class="material-icons" slot='right'>visibility</i>				
+	//	<i class="material-icons" slot='right'>visibility</i>
 	//</input-select>
 
 	constructor() {
@@ -182,9 +182,9 @@ const lvInputSelect = customElements.define('input-select', class extends HTMLEl
 
 		// insert the input element (input-outlined)
 		this.shadowRoot.getElementById('input-container').innerHTML = `
-			<input-outlined elem-name='input' value='' label='${label}' type='${type}' ${required? 'required':''} readonly>
+			<lv-input-outlined elem-name='input' value='' label='${label}' type='${type}' ${required? 'required':''} readonly>
 				<!--<span slot='right' >X</span>-->
-			</input-outlined>
+			</lv-input-outlined>
 		`;
 
 		this.shadowRoot.getElementById('select-list').style.width = this.shadowRoot.getElementById('container').offsetWidth+'px';

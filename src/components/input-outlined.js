@@ -1,6 +1,6 @@
 import {lwcWriteCSSRule} from '../utils.js'
 
-const lvListRender = customElements.define('input-outlined', class extends HTMLElement {
+const lvListRender = customElements.define('lv-input-outlined', class extends HTMLElement {
 	//<input-outlined value='' label='' type='text'>
 	//	<i class="material-icons" slot='left'>favorite</i>
 	//	<i class="material-icons" slot='right'>visibility</i>
