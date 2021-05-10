@@ -11,6 +11,7 @@ import lvListRender from './components/list-render.js'
 import lvInputOutlined from './components/input-outlined.js'
 import lvInputSelect from './components/input-select.js'
 import lvForm from './components/form.js'
+import lvExpand from './components/expand.js'
 
 const lvWebComponents = {
 	lvHeader,
@@ -25,7 +26,8 @@ const lvWebComponents = {
 	lvListRender,
 	lvInputOutlined,
 	lvInputSelect,
-	lvForm
+	lvForm,
+	lvExpand
 	// lvListTemplate
 }
 
