@@ -10,6 +10,7 @@ import lvTeleport from './components/teleport.js'
 import lvListRender from './components/list-render.js'
 import lvInputOutlined from './components/input-outlined.js'
 import lvInputSelect from './components/input-select.js'
+import lvInputList from './components/input-list.js'
 import lvForm from './components/form.js'
 import lvExpand from './components/expand.js'
 
@@ -26,6 +27,7 @@ const lvWebComponents = {
 	lvListRender,
 	lvInputOutlined,
 	lvInputSelect,
+	lvInputList,
 	lvForm,
 	lvExpand
 	// lvListTemplate
