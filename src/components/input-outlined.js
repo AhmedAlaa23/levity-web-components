@@ -247,7 +247,7 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 		this.shadowRoot.getElementById('input').addEventListener('change',(e)=>{
 			this.value = e.target.value;
 			// on input change trigger the onchange event in the custom elem
-			this.dispatchEvent(new Event('change', { 'bubbles': true }));
+			this.dispatchEvent(new Event('change', { 'bubbles': false }));
 		});
 
 		this.shadowRoot.getElementById('input').addEventListener('keyup',(e)=>{
@@ -265,7 +265,7 @@ const lvListRender = customElements.define('lv-input-outlined', class extends HT
 		});
 
 		this.shadowRoot.getElementById('input').addEventListener('focusout',()=>{
-			this.dispatchEvent(new Event('change', { 'bubbles': true }));
+			this.dispatchEvent(new Event('change', { 'bubbles': false }));
 			
 			if(this.shadowRoot.getElementById('input').value == ""){
 				this.moveLabelDown();
