@@ -10,6 +10,7 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 		this.renderItem = function(){};
 		this._currentItem = 0;
 		this.search = '';
+		this.inputStyle = 'outlined';
 	}
 
 	get value(){
@@ -161,11 +162,19 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 	connectedCallback() {
 		let type = this.hasAttribute('type')? this.getAttribute('type'):'text';
 		let label = this.hasAttribute('label')? this.getAttribute('label'):'';
+		this.inputStyle = this.hasAttribute('input-style')? this.getAttribute('input-style'):this.inputStyle;
 		let required = this.hasAttribute('required')? true:false;
 		let readonly = this.hasAttribute('readonly')? true:false;
 
-		this.innerHTML += `
-		<lv-input-outlined lv-elem-id='input' value='' label='${label}' type='${type}' ${required? 'required':''} ${readonly? 'readonly':''}></lv-input-outlined>`;
+
+		if(this.inputStyle==='plain'){
+			this.innerHTML += `
+			<lv-input lv-elem-id='input' value='' label='${label}' type='${type}' ${required? 'required':''} ${readonly? 'readonly':''}></lv-input>`;
+		}
+		else{
+			this.innerHTML += `
+			<lv-input-outlined lv-elem-id='input' value='' label='${label}' type='${type}' ${required? 'required':''} ${readonly? 'readonly':''}></lv-input-outlined>`;
+		}
 
 		this.innerHTML += `
 		<div lv-elem-id='list' style='display:none; position: absolute; left:0; z-index:100; border: 1px solid gray; background-color: white; box-shadow: 1px 1px 8px #ccc; box-sizing: border-box;'></div>`;

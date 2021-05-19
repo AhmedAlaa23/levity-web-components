@@ -1,6 +1,6 @@
 import {lwcWriteCSSRule} from '../utils.js'
 
-const lvInputOutlined = customElements.define('lv-input-outlined', class extends HTMLElement {
+const lvInput = customElements.define('lv-input', class extends HTMLElement {
 	//<input-outlined value='' label='' type='text'>
 	//	<i class="material-icons" slot='left'>favorite</i>
 	//	<i class="material-icons" slot='right'>visibility</i>
@@ -139,36 +139,10 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 		if(oldValue != newValue){
 			if(attrName == "value"){
 				this.value = newValue;
-				if(this.value != ""){
-					this.moveLabelUp();
-				}
-				else{
-					// to check if the focus is on the element keep the label up
-					if(document.activeElement != this){
-						this.moveLabelDown();
-					}
-				}
 			}
 			else{
 				this.updateComponent();
 			}
-		}
-	}
-
-	moveLabelUp(){
-		this.shadowRoot.getElementById('center').style.position = 'initial';
-
-		this.shadowRoot.getElementById('label').style.fontSize = '15px';
-		this.shadowRoot.getElementById('label').style.transform = 'translate(12px, -11px)';
-		// this.shadowRoot.getElementById('label').style.backgroundColor = 'white';
-		this.shadowRoot.getElementById('label').style.padding = '0px 4px';
-	}
-
-	moveLabelDown(){
-		// input with type date the label can't move down
-		if(this.type != 'date'){
-			this.shadowRoot.getElementById('center').style.position = 'relative';
-			this.shadowRoot.getElementById('label').removeAttribute('style');
 		}
 	}
 
@@ -188,10 +162,18 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 	}
 
 	updateComponent(){
+		this.type = this.hasAttribute('type')? this.getAttribute('type'):'text';
+		let required = this.hasAttribute('required')? true:false;
+		let readonly = this.hasAttribute('readonly')? true:false;
 		this.width = this.getAttribute('width') ?? this.width;
 		this.label = this.getAttribute('label') ?? this.label;
 
-		this.shadowRoot.getElementById('label').innerHTML = this.label;
+
+		this.shadowRoot.getElementById('input').setAttribute('placeholder', this.label);
+
+		this.shadowRoot.getElementById('input').setAttribute('type',this.type);
+		if(required){this.shadowRoot.getElementById('input').setAttribute('required','')}
+		if(readonly){this.shadowRoot.getElementById('input').setAttribute('readonly','')}
 
 		if(this.hasAttribute('min')){
 			this.shadowRoot.getElementById('input').setAttribute('min', this.getAttribute('min'));
@@ -223,18 +205,6 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 	connectedCallback() {
 		this.updateComponent();
 
-		this.style.width = this.hasAttribute('width')? this.getAttribute('width'):'';
-		this.type = this.hasAttribute('type')? this.getAttribute('type'):'text';
-		let label = this.hasAttribute('label')? this.getAttribute('label'):'';
-		let required = this.hasAttribute('required')? true:false;
-		let readonly = this.hasAttribute('readonly')? true:false;
-
-		this.shadowRoot.getElementById('input').setAttribute('type',this.type);
-		if(required){this.shadowRoot.getElementById('input').setAttribute('required','')}
-		this.shadowRoot.getElementById('label').innerHTML = label;
-		if(readonly){this.shadowRoot.getElementById('input').setAttribute('readonly','')}
-
-
 		// if(readonly){
 		// 	// this is a workaround because html doesn't support validation on readonly inputs
 		// 	this.shadowRoot.getElementById('input').addEventListener('keydown',(e)=>{
@@ -260,17 +230,11 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 		});
 
 		this.shadowRoot.getElementById('input').addEventListener('focus',()=>{
-			this.moveLabelUp();
 			this.shadowRoot.getElementById('container').style.border = "2px solid #222";
 		});
 
 		this.shadowRoot.getElementById('input').addEventListener('focusout',()=>{
 			this.dispatchEvent(new Event('change', { 'bubbles': false }));
-			
-			if(this.shadowRoot.getElementById('input').value == ""){
-				this.moveLabelDown();
-			}
-
 			this.shadowRoot.getElementById('container').style.border = "1px solid gray";
 		});
 
@@ -290,4 +254,4 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 
 });
 
-export default lvInputOutlined
+export default lvInput
