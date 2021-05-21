@@ -53,13 +53,15 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 	bind(formObject={}, options={emptyEqualsUndefined: true}){
 		const inputs = Array.from(this.querySelectorAll('[name]'));
 		for(let input of inputs){
-			const inputName = input.getAttribute('name');
 			// initial bind
-			formObject[inputName] = options.emptyEqualsUndefined && input.value===""? undefined:input.value;
-			
+			const inputName = input.getAttribute('name');
+			const inputValue = options.emptyEqualsUndefined && input.value===""? undefined:input.value;
+			formObject[inputName] = input.type==='number'? Number(inputValue):inputValue;
+
 			input.addEventListener('change', (e)=>{
 				const inputName = input.getAttribute('name');
-				formObject[inputName] = options.emptyEqualsUndefined && e.target.value===""? undefined:e.target.value;
+				const inputValue = options.emptyEqualsUndefined && e.target.value===""? undefined:e.target.value;
+				formObject[inputName] = e.target.type==='number'? Number(inputValue):inputValue;
 			})
 		}
 	}

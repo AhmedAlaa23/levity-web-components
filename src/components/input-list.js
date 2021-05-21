@@ -29,7 +29,7 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 	}
 
 	get search(){
-		return this.search;
+		return this.getAttribute('search')
 	}
 	set search(val) {
 		if(this.isConnected){
