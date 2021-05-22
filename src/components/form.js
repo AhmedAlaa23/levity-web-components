@@ -56,12 +56,12 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 			// initial bind
 			const inputName = input.getAttribute('name');
 			const inputValue = options.emptyEqualsUndefined && input.value===""? undefined:input.value;
-			formObject[inputName] = input.type==='number'? Number(inputValue):inputValue;
+			formObject[inputName] = input.getAttribute('type')==='number'? Number(inputValue):inputValue;
 
 			input.addEventListener('change', (e)=>{
 				const inputName = input.getAttribute('name');
 				const inputValue = options.emptyEqualsUndefined && e.target.value===""? undefined:e.target.value;
-				formObject[inputName] = e.target.type==='number'? Number(inputValue):inputValue;
+				formObject[inputName] = e.target.getAttribute('type')==='number'? Number(inputValue):inputValue;
 			})
 		}
 	}
@@ -71,7 +71,8 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 		for(let input of inputs){
 			let inputName = input.getAttribute('name');
 			input.value = formObject[inputName]===undefined? "":formObject[inputName];
-			formObject[inputName] = options.emptyEqualsUndefined && input.value===""? undefined:input.value;
+			const inputValue = options.emptyEqualsUndefined && input.value===""? undefined:input.value;
+			formObject[inputName] = input.getAttribute('type')==='number'? Number(inputValue):inputValue;
 		}
 	}
 

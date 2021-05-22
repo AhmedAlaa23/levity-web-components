@@ -182,7 +182,7 @@ const lvInputSelect = customElements.define('lv-input-select', class extends HTM
 
 		// insert the input element (input-outlined)
 		this.shadowRoot.getElementById('input-container').innerHTML = `
-			<lv-input-outlined elem-name='input' value='' label='${label}' type='${type}' ${required? 'required':''} readonly>
+			<lv-input-outlined elem-name='input' value='' label='${label}' ${required? 'required':''} readonly>
 				<!--<span slot='right' >X</span>-->
 			</lv-input-outlined>
 		`;
