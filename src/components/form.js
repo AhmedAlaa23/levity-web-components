@@ -50,6 +50,51 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 		return true;
 	}
 
+	assembleBindData({formObject, options}){
+		const assembleElements = Array.from(this.querySelectorAll('[lv-form-assemble]'));
+		for(let elem of assembleElements){
+			const elemAssemble = elem.getAttribute('lv-form-assemble');
+			const elemAssembleType = elem.hasAttribute('lv-form-assemble-type')? elem.getAttribute('lv-form-assemble-type'):'nested';
+			const elemAssemblePropName = elemAssemble.split(':')[0];
+			const elemAssemblePropType = elemAssemble.split(':')[1];
+			
+			let assembleData = undefined;
+			if(elemAssemblePropType==='obj'){assembleData = {};}
+			if(elemAssemblePropType==='arr'){assembleData = [];}
+			
+
+			if(elemAssembleType==='nested'){
+				const assembleDataElements = Array.from(elem.querySelectorAll('[lv-form-assemble-data]'));
+				for(let elemData of assembleDataElements){
+					const assembleSubDataType = elemData.getAttribute('lv-form-assemble-data');
+					let assembleSubData = undefined;
+					if(assembleSubDataType==='obj'){assembleSubData = {};}
+					if(assembleSubDataType==='arr'){assembleSubData = [];}
+					
+					const subInputElements = Array.from(elemData.querySelectorAll('[lv-form-name]'));
+					for(let subInputElem of subInputElements){
+						const subInputName = subInputElem.getAttribute('lv-form-name');
+						const subInputValue = options.emptyEqualsUndefined && subInputElem.value===""? undefined:subInputElem.value;
+						assembleSubData[subInputName] = subInputElem.getAttribute('type')==='number'? Number(subInputValue):subInputValue;
+					}
+					
+					// if(elemAssemblePropType==='obj'){assembleData[];}
+					if(elemAssemblePropType==='arr'){assembleData.push({...assembleSubData});}
+				}
+				formObject[elemAssemblePropName] = assembleData;
+			}
+		}
+	}
+
+	assignChangeEventsToSubBindData({formObject, options}){
+		const subInputElements = Array.from(this.querySelectorAll('[lv-form-name]'));
+		for(let subInputElem of subInputElements){
+			subInputElem.addEventListener('change', (e)=>{
+				this.assembleBindData({formObject, options});
+			})
+		}
+	}
+
 	bind(formObject={}, options={emptyEqualsUndefined: true}){
 		const inputs = Array.from(this.querySelectorAll('[name]'));
 		for(let input of inputs){
@@ -64,6 +109,10 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 				formObject[inputName] = e.target.getAttribute('type')==='number'? Number(inputValue):inputValue;
 			})
 		}
+
+		//*============== assemble sub and nested data ===============
+		this.assembleBindData({formObject, options});
+		this.assignChangeEventsToSubBindData({formObject, options});
 	}
 
 	updateValues(formObject={}, options={emptyEqualsUndefined: true}){
@@ -74,6 +123,9 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 			const inputValue = options.emptyEqualsUndefined && input.value===""? undefined:input.value;
 			formObject[inputName] = input.getAttribute('type')==='number'? Number(inputValue):inputValue;
 		}
+
+		//*============== assemble sub and nested data ===============
+		this.assembleBindData({formObject, options});
 	}
 
 	connectedCallback() {
