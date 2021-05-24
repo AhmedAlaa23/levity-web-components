@@ -131,7 +131,9 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 				if(this._currentItem != 0){
 					// listElem.children[this._currentItem-1].style.filter = 'contrast(200%)';
 					// listElem.children[this._currentItem-1].focus();
-					this.querySelector(`[item-num='${this._currentItem-1}']`).style.filter = 'contrast(200%)';
+					if(this.querySelector(`[item-num='${this._currentItem-1}']`)){
+						this.querySelector(`[item-num='${this._currentItem-1}']`).style.filter = 'contrast(200%)';
+					}
 					// this.querySelector(`[item-num='${this._currentItem-1}']`).focus();
 				}
 			}

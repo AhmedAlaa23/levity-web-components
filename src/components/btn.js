@@ -66,7 +66,7 @@ const lvBtn = customElements.define('lv-btn', class extends HTMLElement {
 			text-align: center;
 			cursor: pointer;
 			padding: ${this.link? '0':'0.5rem 1.2rem !important'};
-			margin: ${this.margin} !important;
+			margin: ${this.margin};
 		}`;
 
 		// const linkStyle = `{
