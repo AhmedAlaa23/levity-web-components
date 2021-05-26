@@ -207,7 +207,7 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 			// this.setAttribute('value', e.target.value);
 			// this.setAttribute('search', e.target.value);
 			this.search = e.target.value;
-			this.dispatchEvent(new Event('change', { 'bubbles': false }));
+			this.dispatchEvent(new Event('search', { 'bubbles': false }));
 			// filter data from the array
 			// this.dataListFiltered = this.dataList.filter((item)=>{
 			// 	return item.name.match( new RegExp(`.*${e.target.value}.*`,'i') );

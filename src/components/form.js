@@ -52,6 +52,7 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 		return true;
 	}
 
+	// todo: work on cascading data (Array of objects of array of objects)
 	assembleBindData(){
 		const assembleElements = Array.from(this.querySelectorAll('[lv-form-assemble]'));
 		for(let elem of assembleElements){
