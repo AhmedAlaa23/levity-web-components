@@ -166,7 +166,7 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 
 	moveLabelDown(){
 		// input with type date the label can't move down
-		if(this.type != 'date'){
+		if(!['date','datetime-local'].includes(this.type)){
 			this.shadowRoot.getElementById('center').style.position = 'relative';
 			this.shadowRoot.getElementById('label').removeAttribute('style');
 		}
@@ -234,6 +234,18 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 		this.shadowRoot.getElementById('label').innerHTML = label;
 		if(readonly){this.shadowRoot.getElementById('input').setAttribute('readonly','')}
 
+
+		if(['date','datetime-local'].includes(this.type)){
+			this.moveLabelUp();
+			if(this.hasAttribute('date')){
+				const dateValue = this.getAttribute('date');
+				if(dateValue === 'now'){
+					const now = new Date();
+					const nowStr = now.toISOString().slice(0,-8);
+					this.value = nowStr;
+				}
+			}
+		}
 
 		// if(readonly){
 		// 	// this is a workaround because html doesn't support validation on readonly inputs
