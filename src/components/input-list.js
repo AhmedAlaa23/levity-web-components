@@ -171,11 +171,11 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 
 		if(this.inputStyle==='plain'){
 			this.innerHTML += `
-			<lv-input lv-elem-id='input' value='' label='${label}' type='${type}' ${required? 'required':''} ${readonly? 'readonly':''}></lv-input>`;
+			<lv-input lv-elem-id='input' value='' label='${label}' ${required? 'required':''} ${readonly? 'readonly':''}></lv-input>`;
 		}
 		else{
 			this.innerHTML += `
-			<lv-input-outlined lv-elem-id='input' value='' label='${label}' type='${type}' ${required? 'required':''} ${readonly? 'readonly':''}></lv-input-outlined>`;
+			<lv-input-outlined lv-elem-id='input' value='' label='${label}' ${required? 'required':''} ${readonly? 'readonly':''}></lv-input-outlined>`;
 		}
 
 		this.innerHTML += `

@@ -265,6 +265,7 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 		this.shadowRoot.getElementById('input').addEventListener('keyup',(e)=>{
 			// this.value = e.target.value;
 			this.setAttribute('value', e.target.value);
+			this.dispatchEvent(new Event('change', { 'bubbles': false }));
 		});
 
 		this.shadowRoot.getElementById('container').addEventListener('click',()=>{
