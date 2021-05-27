@@ -52,41 +52,49 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 		return true;
 	}
 
-	// todo: work on cascading data (Array of objects of array of objects)
-	assembleBindData(){
-		const assembleElements = Array.from(this.querySelectorAll('[lv-form-assemble]'));
-		for(let elem of assembleElements){
-			const elemAssemble = elem.getAttribute('lv-form-assemble');
-			const elemAssembleType = elem.hasAttribute('lv-form-assemble-type')? elem.getAttribute('lv-form-assemble-type'):'nested';
-			const elemAssemblePropName = elemAssemble.split(':')[0];
-			const elemAssemblePropType = elemAssemble.split(':')[1];
-			
-			let assembleData = undefined;
-			if(elemAssemblePropType==='obj'){assembleData = {};}
-			if(elemAssemblePropType==='arr'){assembleData = [];}
-			
+	assembleSubData({parentVar, parentVarType, parentElement, isParentDirect=true, assembleLevel}){
+		const assembleElements = Array.from(this.querySelectorAll("[lv-form-assemble-level='1']"));
+		for(const assembleElement of assembleElements){
+			const assembleElementType = assembleElement.getAttribute('lv-form-assemble').split(':')[1];
+			let assembleVar = assembleElementType==='obj'? {}:[];
+			const assembleInputs = Array.from(assembleElement.querySelectorAll('[lv-form-name]'));
+			for(const assembleInput of assembleInputs){
+				const directInputName = assembleInput.getAttribute('lv-form-name');
+				const directInputValue = this.bindOptions.emptyEqualsUndefined && assembleInput.value===""? undefined:assembleInput.value;
+				assembleVar[directInputName] = assembleInput.getAttribute('type')==='number'? Number(directInputValue):directInputValue;
+			}
 
-			if(elemAssembleType==='nested'){
-				const assembleDataElements = Array.from(elem.querySelectorAll('[lv-form-assemble-data]'));
-				for(let elemData of assembleDataElements){
-					const assembleSubDataType = elemData.getAttribute('lv-form-assemble-data');
-					let assembleSubData = undefined;
-					if(assembleSubDataType==='obj'){assembleSubData = {};}
-					if(assembleSubDataType==='arr'){assembleSubData = [];}
-					
-					const subInputElements = Array.from(elemData.querySelectorAll('[lv-form-name]'));
-					for(let subInputElem of subInputElements){
-						const subInputName = subInputElem.getAttribute('lv-form-name');
-						const subInputValue = this.bindOptions.emptyEqualsUndefined && subInputElem.value===""? undefined:subInputElem.value;
-						assembleSubData[subInputName] = subInputElem.getAttribute('type')==='number'? Number(subInputValue):subInputValue;
-					}
-					
-					// if(elemAssemblePropType==='obj'){assembleData[];}
-					if(elemAssemblePropType==='arr'){assembleData.push({...assembleSubData});}
-				}
-				this.bindObject[elemAssemblePropName] = assembleData;
+			if(parentVarType==='arr'){
+				parentVar.push(assembleVar);
 			}
 		}
+	}
+
+	bindData(){
+		const directInputs = Array.from(this.querySelectorAll('[name]'));
+		for(let directInput of directInputs){
+			const directInputName = directInput.getAttribute('name');
+			const directInputValue = this.bindOptions.emptyEqualsUndefined && directInput.value===""? undefined:directInput.value;
+			this.bindObject[directInputName] = directInput.getAttribute('type')==='number'? Number(directInputValue):directInputValue;
+		}
+
+		//*========
+		const formProps = Array.from(this.querySelectorAll("[lv-form-assemble-level='0']"));
+		for(const formProp of formProps){
+			const formPropName = formProp.getAttribute('lv-form-assemble').split(':')[0];
+			const formPropType = formProp.getAttribute('lv-form-assemble').split(':')[1];
+			this.bindObject[formPropName] = formPropType==='arr'? []:{};
+		
+			//*========
+			this.assembleSubData({parentVar: this.bindObject[formPropName], parentVarType: formPropType});
+			//*========
+		}
+		//*========
+
+		// this.assembleSubData({parentVar: assembleData, parentDataType: assembleDataType, parentElement: elem, assembleLevel: 0});
+		// this.bindObject[assembleDataName] = assembleData;
+
+		console.log('final', this.bindObject);
 	}
 
 	assignChangeEventsListenersToInputs(){
@@ -119,16 +127,10 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 	bind(bindObject={}, options={emptyEqualsUndefined: true}){
 		this.bindObject = bindObject;
 		this.bindOptions = options;
-		const inputs = Array.from(this.querySelectorAll('[name]'));
-		for(let input of inputs){
-			// initial bind
-			const inputName = input.getAttribute('name');
-			const inputValue = this.bindOptions.emptyEqualsUndefined && input.value===""? undefined:input.value;
-			this.bindObject[inputName] = input.getAttribute('type')==='number'? Number(inputValue):inputValue;
-		}
+
+		this.bindData();
 
 		//*============== assemble sub and nested data ===============
-		this.assembleBindData();
 		this.assignChangeEventsListenersToInputs();
 	}
 
