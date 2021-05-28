@@ -11,6 +11,7 @@ const lvBtn = customElements.define('lv-btn', class extends HTMLElement {
 		this.shape = 'square';
 		this.rounded = '4px';
 		this.margin = '0px';
+		this.padding = '';
 
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.innerHTML = `
@@ -38,6 +39,7 @@ const lvBtn = customElements.define('lv-btn', class extends HTMLElement {
 		this.shape = this.getAttribute('shape') ?? this.shape;
 		this.rounded = this.getAttribute('rounded') ?? this.rounded;
 		this.margin = this.getAttribute('margin') ?? this.margin;
+		this.padding = this.getAttribute('padding') ?? this.padding;
 		this.link = this.getAttribute('link');
 		this.target = this.getAttribute('target') ?? '_self';
 
@@ -65,7 +67,7 @@ const lvBtn = customElements.define('lv-btn', class extends HTMLElement {
 			border-radius: ${this.rounded};
 			text-align: center;
 			cursor: pointer;
-			padding: ${this.link? '0':'0.5rem 1.2rem !important'};
+			padding: ${this.padding===''? this.link? '0':'0.5rem 1.2rem !important' : `${this.padding} !important`};
 			margin: ${this.margin};
 		}`;
 

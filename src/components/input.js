@@ -1,10 +1,10 @@
 import {lwcWriteCSSRule} from '../utils.js'
 
 const lvInput = customElements.define('lv-input', class extends HTMLElement {
-	//<input-outlined value='' label='' type='text'>
+	//<input value='' label='' type='text'>
 	//	<i class="material-icons" slot='left'>favorite</i>
 	//	<i class="material-icons" slot='right'>visibility</i>
-	//</input-outlined>
+	//</input>
 
 	constructor() {
 		super();
@@ -12,8 +12,9 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 		this.type = 'text';
 		this.label = '';
 		this.width = '100%';
+		this.padding = '10px 0px';
+		this.fontSize = '20px';
 
-		// Attach a shadow root to.
 		const shadowRoot = this.attachShadow({mode: 'open'});
 		shadowRoot.innerHTML = `
 		<style>
@@ -33,7 +34,7 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 				box-sizing: border-box;
 				border: 1px solid gray;
 				border-radius: 3px;
-				padding: 10px 0px;
+				padding: ${this.padding};
 				background-color: inherit;
 			}
 
@@ -78,7 +79,7 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 				width: 100%;
 				background-color: inherit;
 				font-family: sans-serif;
-				font-size: 20px;
+				font-size: ${this.fontSize};
 			}
 
 			#input::-webkit-outer-spin-button,
@@ -132,7 +133,7 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 	}
 
 	static get observedAttributes() {
-		return ['value','label','max','min','width'];
+		return ['value','label','max','min','width','padding','font-size'];
 	}
 
 	attributeChangedCallback(attrName, oldValue, newValue){
@@ -167,7 +168,8 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 		let readonly = this.hasAttribute('readonly')? true:false;
 		this.width = this.getAttribute('width') ?? this.width;
 		this.label = this.getAttribute('label') ?? this.label;
-
+		this.padding = this.getAttribute('padding') ?? this.padding;
+		this.fontSize = this.getAttribute('font-size') ?? this.fontSize;
 
 		this.shadowRoot.getElementById('input').setAttribute('placeholder', this.label);
 
@@ -189,16 +191,30 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 			width: ${this.width};
 		}`
 
+		const containerStyle = `{
+			margin-top: 10px;
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			position: relative;
+			box-sizing: border-box;
+			border: 1px solid gray;
+			border-radius: 3px;
+			padding: ${this.padding};
+			background-color: inherit;
+		}`
+
 		const inputStyle = `{
 			border: 0;
 			outline: none;
 			width: 100%;
 			background-color: inherit;
 			font-family: sans-serif;
-			font-size: 20px;
+			font-size: ${this.fontSize};
 		}`;
 
 		lwcWriteCSSRule(`:host`, hostStyle, this.shadowRoot.styleSheets[0]);
+		lwcWriteCSSRule(`:host > #container`, containerStyle, this.shadowRoot.styleSheets[0]);
 		lwcWriteCSSRule(`:host > input`, inputStyle, this.shadowRoot.styleSheets[0]);
 	}
 

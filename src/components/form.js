@@ -52,11 +52,10 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 		return true;
 	}
 
-	assembleSubData({parentVar, parentVarType, parentElement, isParentDirect=true, assembleLevel}){
+	assembleSubData({parentVar, parentVarType, parentElement, assembleLevel}){
 		const assembleElements = Array.from(parentElement.querySelectorAll(`[lv-form-assemble-level='${assembleLevel}']`));
 		
 		for(const assembleElement of assembleElements){
-
 			const assembleElementName = assembleElement.getAttribute('lv-form-assemble').split(':')[0];
 			const assembleElementType = assembleElement.getAttribute('lv-form-assemble').split(':')[1];
 			let assembleVar = assembleElementType==='obj'? {}:[];
