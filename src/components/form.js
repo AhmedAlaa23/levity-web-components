@@ -104,11 +104,6 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 			//*========
 		}
 		//*========
-
-		// this.assembleSubData({parentVar: assembleData, parentDataType: assembleDataType, parentElement: elem, assembleLevel: 0});
-		// this.bindObject[assembleDataName] = assembleData;
-
-		console.log('final', this.bindObject);
 	}
 
 	assignChangeEventsListenersToInputs(){
