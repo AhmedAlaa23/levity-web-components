@@ -53,20 +53,35 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 	}
 
 	assembleSubData({parentVar, parentVarType, parentElement, isParentDirect=true, assembleLevel}){
-		const assembleElements = Array.from(this.querySelectorAll("[lv-form-assemble-level='1']"));
+		const assembleElements = Array.from(parentElement.querySelectorAll(`[lv-form-assemble-level='${assembleLevel}']`));
+		
 		for(const assembleElement of assembleElements){
+			console.log(assembleLevel, JSON.stringify(parentVar, (key,value)=>{return typeof value === 'undefined' ? null : value;}));
+
+			const assembleElementName = assembleElement.getAttribute('lv-form-assemble').split(':')[0];
 			const assembleElementType = assembleElement.getAttribute('lv-form-assemble').split(':')[1];
 			let assembleVar = assembleElementType==='obj'? {}:[];
-			const assembleInputs = Array.from(assembleElement.querySelectorAll('[lv-form-name]'));
+
+			const assembleInputs = Array.from(assembleElement.querySelectorAll(':scope > [lv-form-name]'));
 			for(const assembleInput of assembleInputs){
-				const directInputName = assembleInput.getAttribute('lv-form-name');
-				const directInputValue = this.bindOptions.emptyEqualsUndefined && assembleInput.value===""? undefined:assembleInput.value;
-				assembleVar[directInputName] = assembleInput.getAttribute('type')==='number'? Number(directInputValue):directInputValue;
+				const subInputName = assembleInput.getAttribute('lv-form-name');
+				const subInputValue = this.bindOptions.emptyEqualsUndefined && assembleInput.value===""? undefined:assembleInput.value;
+				assembleVar[subInputName] = assembleInput.getAttribute('type')==='number'? Number(subInputValue):subInputValue;
 			}
 
-			if(parentVarType==='arr'){
-				parentVar.push(assembleVar);
+			const formSubProps = Array.from(assembleElement.querySelectorAll(`[lv-form-assemble-level='${assembleLevel+1}']`));
+			for(const formSubProp of formSubProps){
+				const formSubPropName = formSubProp.getAttribute('lv-form-assemble').split(':')[0];
+				const formSubPropType = formSubProp.getAttribute('lv-form-assemble').split(':')[1];
+				let formSubPropVar = formSubPropType==='arr'? []:{};
+				if(assembleElementType==='obj'){ assembleVar[formSubPropName] = formSubPropVar; }
+				// if(assembleElementType==='arr'){ assembleVar.push(formSubPropVar); }
 			}
+
+			if(parentVarType==='arr'){ parentVar.push(assembleVar); }
+			else if(parentVarType==='obj'){ parentVar[assembleElementName] = assembleVar; }
+			
+			this.assembleSubData({parentVar: assembleVar, parentVarType: assembleElementType, parentElement: assembleElement, assembleLevel: assembleLevel+1})
 		}
 	}
 
@@ -86,7 +101,7 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 			this.bindObject[formPropName] = formPropType==='arr'? []:{};
 		
 			//*========
-			this.assembleSubData({parentVar: this.bindObject[formPropName], parentVarType: formPropType});
+			this.assembleSubData({parentVar: this.bindObject[formPropName], parentVarType: formPropType, parentElement: this, assembleLevel: 1});
 			//*========
 		}
 		//*========
