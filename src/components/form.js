@@ -99,7 +99,7 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 			this.bindObject[formPropName] = formPropType==='arr'? []:{};
 		
 			//*========
-			this.assembleSubData({parentVar: this.bindObject[formPropName], parentVarType: formPropType, parentElement: this, assembleLevel: 1});
+			this.assembleSubData({parentVar: this.bindObject[formPropName], parentVarType: formPropType, parentElement: formProp, assembleLevel: 1});
 			//*========
 		}
 		//*========

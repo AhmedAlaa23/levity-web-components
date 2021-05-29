@@ -155,7 +155,7 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 				const valueElem = item.querySelector('[lv-value]')
 				const labelElem = item.querySelector('[lv-label]')
 				if(valueElem){this.setAttribute('value', valueElem.getAttribute('lv-value'));}
-				if(labelElem){this.querySelector("[lv-elem-id='input']").setAttribute('value', labelElem.getAttribute('lv-label'));}
+				if(labelElem){this.querySelector("[lv-elem-id='input']").value = labelElem.getAttribute('lv-label');}
 				this.dispatchEvent(new Event('change', { 'bubbles': false }));
 			})
 		}
