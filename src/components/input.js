@@ -128,8 +128,11 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 			}
 		}
 
-		this.setAttribute('value',val);
-		this.shadowRoot.getElementById('input').value = this.value;
+		if(this.value !== val){
+			this.setAttribute('value',val);
+			this.shadowRoot.getElementById('input').value = this.value;
+			this.dispatchEvent(new Event('change', { 'bubbles': false }));
+		}
 	}
 
 	static get observedAttributes() {
@@ -231,15 +234,15 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 		//==========================
 
 		this.shadowRoot.getElementById('input').addEventListener('change',(e)=>{
-			this.value = e.target.value;
+			// this.value = e.target.value;
 			// on input change trigger the onchange event in the custom elem
-			this.dispatchEvent(new Event('change', { 'bubbles': false }));
+			// this.dispatchEvent(new Event('change', { 'bubbles': false }));
 		});
 
 		this.shadowRoot.getElementById('input').addEventListener('keyup',(e)=>{
 			// this.value = e.target.value;
-			this.setAttribute('value', e.target.value);
-			this.dispatchEvent(new Event('change', { 'bubbles': false }));
+			this.value = e.target.value;
+			// this.dispatchEvent(new Event('change', { 'bubbles': false }));
 		});
 
 		this.shadowRoot.getElementById('container').addEventListener('click',()=>{
@@ -251,7 +254,7 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 		});
 
 		this.shadowRoot.getElementById('input').addEventListener('focusout',()=>{
-			this.dispatchEvent(new Event('change', { 'bubbles': false }));
+			// this.dispatchEvent(new Event('change', { 'bubbles': false }));
 			this.shadowRoot.getElementById('container').style.border = "1px solid gray";
 		});
 
