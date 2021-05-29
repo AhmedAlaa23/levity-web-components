@@ -26,7 +26,6 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 			}
 
 			#container{
-				margin-top: 10px;
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
@@ -195,7 +194,6 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 		}`
 
 		const containerStyle = `{
-			margin-top: 10px;
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
