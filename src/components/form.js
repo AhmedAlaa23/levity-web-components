@@ -64,7 +64,8 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 			for(const assembleInput of assembleInputs){
 				const subInputName = assembleInput.getAttribute('name');
 				const subInputValue = this.bindOptions.emptyEqualsUndefined && assembleInput.value===""? undefined:assembleInput.value;
-				assembleVar[subInputName] = assembleInput.getAttribute('type')==='number'? Number(subInputValue):subInputValue;
+				// assembleVar[subInputName] = assembleInput.getAttribute('type')==='number'? Number(subInputValue):subInputValue;
+				assembleVar[subInputName] = assembleInput.getAttribute('type')==='number'? isNaN(Number(subInputValue))? undefined:Number(subInputValue) : subInputValue;
 			}
 
 			const formSubProps = Array.from(assembleElement.querySelectorAll(`[lv-form-assemble-level='${assembleLevel+1}']`));
@@ -88,7 +89,7 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 		for(let directInput of directInputs){
 			const directInputName = directInput.getAttribute('name');
 			const directInputValue = this.bindOptions.emptyEqualsUndefined && directInput.value===""? undefined:directInput.value;
-			this.bindObject[directInputName] = directInput.getAttribute('type')==='number'? Number(directInputValue):directInputValue;
+			this.bindObject[directInputName] = directInput.getAttribute('type')==='number'? isNaN(Number(directInputValue))? undefined:Number(directInputValue) : directInputValue;
 		}
 
 		//*========
@@ -133,7 +134,7 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 		}
 
 		//*============== assemble sub and nested data ===============
-		this.assembleBindData();
+		this.bindData();
 	}
 
 	connectedCallback() {
