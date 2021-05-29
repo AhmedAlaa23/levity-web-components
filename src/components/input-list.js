@@ -34,6 +34,9 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 	set search(val) {
 		if(this.isConnected){
 			this.setAttribute('search',val);
+			if(this.querySelector("[lv-elem-id='input']")){
+				this.querySelector("[lv-elem-id='input']").value = val;
+			}
 		}
 	}
 
@@ -70,7 +73,7 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 	}
 
 	static get observedAttributes() {
-		return ['value','label'];
+		return ['value','label','search'];
 	}
 
 	attributeChangedCallback(attrName, oldValue, newValue){
@@ -87,6 +90,9 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 				if(inputElem!=null){
 					inputElem.setAttribute('label',newValue);
 				}
+			}
+			if(attrName == "search"){
+				this.search = newValue;
 			}
 		}
 	}
@@ -156,6 +162,7 @@ const lvInputList = customElements.define('lv-input-list', class extends HTMLEle
 				const labelElem = item.querySelector('[lv-label]')
 				if(valueElem){this.setAttribute('value', valueElem.getAttribute('lv-value'));}
 				if(labelElem){this.querySelector("[lv-elem-id='input']").value = labelElem.getAttribute('lv-label');}
+				this.search = labelElem.getAttribute('lv-label');
 				this.dispatchEvent(new Event('change', { 'bubbles': false }));
 			})
 		}

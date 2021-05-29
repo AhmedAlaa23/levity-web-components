@@ -147,11 +147,44 @@ const lvForm = customElements.define('lv-form', class extends HTMLElement {
 	}
 
 	updateInputValues(){
-		// const directInputs = Array.from(this.querySelectorAll(':scope [name]'));
-		// for(let directInput of directInputs){
-		// 	const directInputName = directInput.getAttribute('name');
-		// 	directInput.value = this.bindObject[directInputName]===undefined? "":this.bindObject[directInputName];
-		// }
+		//*========= direct inputs
+		const directInputs = Array.from(this.querySelectorAll('[name]'));
+		for(let directInput of directInputs){
+			const doesInputBelongToThisParent = (element)=>{
+				let root = this;
+				while(element.parentElement!=root){
+					if(element.hasAttribute('lv-form-assemble')){ return false; }
+					element = element.parentElement;
+				}
+				return true;
+			}
+
+			if(doesInputBelongToThisParent(directInput)){
+				const directInputName = directInput.getAttribute('name');
+				directInput.value = this.bindObject[directInputName]===undefined? "":this.bindObject[directInputName];
+			}
+		}
+		//*==============
+
+		//*========= direct attributes
+		const directAttributeElements = Array.from(this.querySelectorAll('[lv-form-bind-attr]'));
+		for(let directAttributeElement of directAttributeElements){
+			const doesInputBelongToThisParent = (element)=>{
+				let root = this;
+				while(element.parentElement!=root){
+					if(element.hasAttribute('lv-form-assemble')){ return false; }
+					element = element.parentElement;
+				}
+				return true;
+			}
+
+			if(doesInputBelongToThisParent(directAttributeElement)){
+				const directAttributeName = directAttributeElement.getAttribute('lv-form-bind-attr').split(':')[0];
+				const directAttributeValueVarName = directAttributeElement.getAttribute('lv-form-bind-attr').split(':')[1];
+				directAttributeElement.setAttribute(directAttributeName, this.bindObject[directAttributeValueVarName]);			
+			}
+		}
+		//*=======================
 
 		//*============== assemble sub and nested data ===============
 		// this.bindData();
