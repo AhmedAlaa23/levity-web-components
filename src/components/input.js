@@ -56,7 +56,7 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 			#center{
 				position: relative;
 				flex: 1;
-				margin: 0px 10px;
+				margin: 0px 0px;
 				line-height: 1.3;
 				background-color: inherit;
 			}

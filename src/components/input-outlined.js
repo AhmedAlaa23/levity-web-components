@@ -240,8 +240,7 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 			if(this.hasAttribute('date')){
 				const dateValue = this.getAttribute('date');
 				if(dateValue === 'now'){
-					const now = new Date();
-					const nowStr = now.toISOString().slice(0,-8);
+					const nowStr = new Intl.DateTimeFormat('sv', {dateStyle: 'short', timeStyle: 'short'}).format(new Date()).replace(' ','T');
 					this.value = nowStr;
 				}
 			}
