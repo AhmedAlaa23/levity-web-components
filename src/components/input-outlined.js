@@ -223,7 +223,7 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 	connectedCallback() {
 		this.updateComponent();
 
-		this.style.width = this.hasAttribute('width')? this.getAttribute('width'):'';
+		// this.style.width = this.hasAttribute('width')? this.getAttribute('width'):'';
 		this.type = this.hasAttribute('type')? this.getAttribute('type'):'text';
 		let label = this.hasAttribute('label')? this.getAttribute('label'):'';
 		let required = this.hasAttribute('required')? true:false;

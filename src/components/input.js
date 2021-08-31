@@ -176,8 +176,6 @@ const lvInput = customElements.define('lv-input', class extends HTMLElement {
 		this.fontSize = this.getAttribute('font-size') ?? this.fontSize;
 		this.color = this.getAttribute('color') ?? this.color;
 
-		console.log(this.getAttribute('color'));
-
 		this.shadowRoot.getElementById('input').setAttribute('placeholder', this.label);
 
 		this.shadowRoot.getElementById('input').setAttribute('type',this.type);
