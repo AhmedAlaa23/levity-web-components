@@ -10,6 +10,7 @@ const lvInputSelect = customElements.define('lv-input-select', class extends HTM
 	constructor() {
 		super();
 
+		this.width = '100%';
 		this.selectList = [];
 
 		// Attach a shadow root to.
@@ -20,6 +21,7 @@ const lvInputSelect = customElements.define('lv-input-select', class extends HTM
 				display: block;
 				overflow: hidden;
 				box-sizing: border-box;
+				width: ${this.width};
 			}
 
 			#select-list{
@@ -78,7 +80,7 @@ const lvInputSelect = customElements.define('lv-input-select', class extends HTM
 	}
 
 	static get observedAttributes() {
-		return ['value','label','list'];
+		return ['value','label','list','width'];
 	}
 
 	attributeChangedCallback(attrName, oldValue, newValue){
@@ -182,7 +184,7 @@ const lvInputSelect = customElements.define('lv-input-select', class extends HTM
 
 		// insert the input element (input-outlined)
 		this.shadowRoot.getElementById('input-container').innerHTML = `
-			<lv-input-outlined elem-name='input' value='' label='${label}' ${required? 'required':''} readonly>
+			<lv-input-outlined elem-name='input' value='' label='${label}' width='${this.width}' ${required? 'required':''} readonly>
 				<!--<span slot='right' >X</span>-->
 			</lv-input-outlined>
 		`;

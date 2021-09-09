@@ -35,4 +35,6 @@ const lvWebComponents = {
 	// lvListTemplate
 }
 
+//todo: inputs to have autocomplete="on" attribute
+
 export default lvWebComponents
