@@ -1,4 +1,3 @@
-
 import {lwcWriteCSSRule} from '../utils.js'
 
 const lvExpand = customElements.define('lv-expand', class extends HTMLElement {
