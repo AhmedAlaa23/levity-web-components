@@ -15,6 +15,7 @@ import lvInputList from './components/input-list.js'
 import lvForm from './components/form.js'
 import lvExpand from './components/expand.js'
 import lvOverlay from './components/overlay.js'
+import lvTable from './components/table.js'
 
 const lvWebComponents = {
 	lvHeader,
@@ -33,7 +34,8 @@ const lvWebComponents = {
 	lvInputList,
 	lvForm,
 	lvExpand,
-	lvOverlay
+	lvOverlay,
+	lvTable,
 	// lvListTemplate
 }
 
