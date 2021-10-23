@@ -7,14 +7,18 @@ const lvExpand = customElements.define('lv-expand', class extends HTMLElement {
 
 		this.expandHeight = 0;
 		this.animTime = 0.2;
+
+		this._expand = false;
 	}
 
-	get expandState(){
-		if( this.hasAttribute('expand') ){return this.getAttribute('expand')=='true'? true:false}
-		else{return false}
+	get expand(){
+		return this.hasAttribute('expand') ?? this._expand;
 	}
-	set expandState(val){
-		this.setAttribute('expand',`${val? 'true':'false'}`);
+
+	set expand(value){
+		value===true? this.setAttribute('expand', '') : this.removeAttribute('expand');
+		this._expand = value;
+		this.updateComponent();
 	}
 
 	static get observedAttributes() {
@@ -23,45 +27,52 @@ const lvExpand = customElements.define('lv-expand', class extends HTMLElement {
 
 	attributeChangedCallback(attrName, oldValue, newValue){
 		if(oldValue != newValue){
-			if(attrName == "expand"){
-				if(newValue == 'true'){this.expandState = true}
-				else{this.expandState = false}
-			}
-			if(attrName == "animtime"){
-				this.animTime = newValue;
-			}
+			this.updateComponent();
 		}
 	}
 
-	expand(){
+	expandComponent(){
 		if(this.isConnected){
 			let expandableElem = this.querySelector("[expandable]");
 			// expandableElem.style.height = `${this.expandHeight}px`;
 			expandableElem.style.maxHeight = '1000px';
-			this.expandState = true;
+			this._expand = true;
 		}
 	}
-	collapse(){
+	collapseComponent(){
 		if(this.isConnected){
 			let expandableElem = this.querySelector("[expandable]");
 			expandableElem.style.maxHeight = '0px';
-			this.expandState = false;
+			this._expand = false;
 		}
 	}
 
-	toggleExpand(){
+	toggleComponent(){
 		if(this.isConnected){
-			if(this.expandState){
-				this.collapse();
+			if(this._expand){
+				this.collapseComponent();
 			}
 			else{
-				this.expand();
+				this.expandComponent();
 			}
 		}
+	}
+
+	updateComponent(){
+
+		if(this.expand){
+			this.expandComponent();
+		}
+		else{
+			this.collapseComponent();
+		}
+
 	}
 
 	connectedCallback() {
-		// this.style = 'display: block;';
+		document.addEventListener('DOMContentLoaded', ()=>{
+			this.updateComponent();
+		});
 
 		let expandableElem = this.querySelector("[expandable]");
 		if(expandableElem){
@@ -71,13 +82,12 @@ const lvExpand = customElements.define('lv-expand', class extends HTMLElement {
 			expandableElem.style.boxSizing = 'border-box';
 			// this.expandHeight = expandableElem.getBoundingClientRect().height;
 			
-			this.collapse();
+			this.collapseComponent();
 		}
-
 
 		if(this.querySelector("[expand-btn]")){
 			this.querySelector("[expand-btn]").addEventListener('click',()=>{
-				this.toggleExpand();
+				this.toggleComponent();
 			})
 		}
 	}
