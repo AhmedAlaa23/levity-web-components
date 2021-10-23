@@ -25,7 +25,7 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 			}
 
 			#container{
-				margin-top: 10px;
+				/*margin-top: 10px;*/
 				display: flex;
 				justify-content: space-between;
 				align-items: center;
@@ -66,10 +66,11 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 				top: 0;
 				left: 0;
 				transition: all 0.2s;
-				background-color: white;
+				background-color: inherit;
 				backdrop-filter: blur(20px);
 				font-family: sans-serif;
 				font-size: 20px;
+				border-radius: 4px;
 			}
 
 			#input{
@@ -202,7 +203,7 @@ const lvInputOutlined = customElements.define('lv-input-outlined', class extends
 
 		const hostStyle = `{
 			display: block;
-			overflow: hidden;
+			/*overflow: hidden;*/
 			box-sizing: border-box;
 			width: ${this.width};
 		}`
