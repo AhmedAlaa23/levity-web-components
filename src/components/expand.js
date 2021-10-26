@@ -36,6 +36,7 @@ const lvExpand = customElements.define('lv-expand', class extends HTMLElement {
 			let expandableElem = this.querySelector("[expandable]");
 			// expandableElem.style.height = `${this.expandHeight}px`;
 			expandableElem.style.maxHeight = '1000px';
+			expandableElem.style.overflow = 'initial';
 			this._expand = true;
 		}
 	}
@@ -43,6 +44,7 @@ const lvExpand = customElements.define('lv-expand', class extends HTMLElement {
 		if(this.isConnected){
 			let expandableElem = this.querySelector("[expandable]");
 			expandableElem.style.maxHeight = '0px';
+			expandableElem.style.overflow = 'hidden';
 			this._expand = false;
 		}
 	}
