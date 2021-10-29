@@ -19,7 +19,6 @@ const lvInputSelect = customElements.define('lv-input-select', class extends HTM
 		<style>
 			:host{
 				display: block;
-				overflow: hidden;
 				box-sizing: border-box;
 				width: ${this.width};
 			}
