@@ -49,8 +49,8 @@ const lvListRender = customElements.define('lv-list-render', class extends HTMLE
 	renderList(){
 		if(this.isConnected){
 			if(this.list != null && typeof this.list[Symbol.iterator] === 'function'){
-				this.innerHTML = "";
 				if(this.list.length > 0){
+					this.innerHTML = "";
 					for(let item of this.list){
 						this.innerHTML += this.renderFunction(item);
 					}
